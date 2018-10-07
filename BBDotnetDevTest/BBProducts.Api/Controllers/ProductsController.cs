@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+using BBProducts.Api.Models;
 using BBProducts.Data;
 
 namespace BBProducts.Api.Controllers
@@ -22,7 +23,20 @@ namespace BBProducts.Api.Controllers
         [HttpGet]
         public IHttpActionResult GetProduct(long id)
         {
+            var response = _prodDac.GetProducts(id);
+            if (response.Products.Count() == 0) return NotFound();
+
             return Ok(_prodDac.GetProducts(id));
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddProduct(ProductDTO[] input)
+        {
+            if (input == null || input.Length == 0) return BadRequest("No data provided");
+
+            _prodDac.AddProducts(input);
+
+            return Ok("Added");
         }
     }
 }
