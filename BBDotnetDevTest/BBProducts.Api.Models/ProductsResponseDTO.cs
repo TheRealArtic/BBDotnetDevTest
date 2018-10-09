@@ -17,7 +17,5 @@ namespace BBProducts.Api.Models
 
         [JsonProperty(PropertyName = "products", Order = 3, NullValueHandling = NullValueHandling.Ignore)]
         public ProductDTO[] Products { get; set; }
-
-
     }
 }

@@ -20,20 +20,25 @@ namespace BBProducts.Data
         /// </summary>
         public ProductsDAC() => _entityModel = new BBProductsDBEntities();
 
-        public ProductsResponseDTO GetProducts()
+        /// <summary>
+        /// Intermediary method to get all ProductIds. Converts EDM objects to POCO DTOs
+        /// </summary>
+        /// <returns>List of Product IDs in a ProductDTO wrapper</returns>
+        public ProductDTO[] GetProducts()
         {
             var productDTOArr = _entityModel.Products.Select(x => new ProductDTO() { ID = x.Id }).ToArray();
-            var productResponseDTO = new ProductsResponseDTO() { Id = Guid.NewGuid().ToString(), Timestamp = DateTime.Now, Products = productDTOArr };
-
-            return productResponseDTO;
+            return productDTOArr;
         }
 
-        public ProductsResponseDTO GetProducts(long id)
+        /// <summary>
+        /// Intermediary method to get a specific product. Converts EDM objects to POCO DTOs
+        /// </summary>
+        /// <param name="id">ID of the product to retrieve</param>
+        /// <returns>Full information of the product specified by the ID</returns>
+        public ProductDTO[] GetProducts(long id)
         {
             var productDTOArr = _entityModel.Products.Where(x => x.Id == id).Select(x => new ProductDTO() { ID = x.Id, Name = x.Name, Quantity = x.Quantity, SaleAmount = x.Sale_Amount }).ToArray();
-            var productResponseDTO = new ProductsResponseDTO() { Id = Guid.NewGuid().ToString(), Timestamp = DateTime.Now, Products = productDTOArr };
-
-            return productResponseDTO;
+            return productDTOArr;
         }
 
         public void AddProducts(params ProductDTO[] newInputs)
